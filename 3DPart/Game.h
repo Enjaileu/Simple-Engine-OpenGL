@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Window.h"
-#include "RendererOGL.h"
+#include "RendererSDL.h"
 #include "Vector2.h"
 #include "Actor.h"
 #include "SpriteComponent.h"
@@ -23,9 +23,15 @@ public:
 	Game(Game&&) = delete;
 	Game& operator=(Game&&) = delete;
 
-private:
-	Game() {};
+	RendererSDL& GetRenderer() { return renderer; }
 
+	//Game Specific
+	vector<Asteroid*>& GetAsteroids() { return asteroids; }
+	void AddAsteroid(Asteroid* asteroid);
+	void RemoveAsteroid(Asteroid* asteroid);
+
+private:
+	Game(){};
 
 public:
 	bool Initialize();
@@ -37,14 +43,6 @@ public:
 	void AddActor(Actor* actor);
 	void RemoveActor(Actor* actor);
 
-	RendererOGL& GetRenderer() { return renderer; }
-
-	//pour le shooter
-	vector<Asteroid*>& GetAsteroids() { return asteroids; }
-	void AddAsteroid(Asteroid* asteroid);
-	void RemoveAsteroid(Asteroid* asteroid);
-
-
 private:
 	void ProcessInput();
 	void Update(float dt);
@@ -52,13 +50,11 @@ private:
 
 	bool isRunning{ true };
 	Window window;
-	RendererOGL& renderer;
+	RendererSDL renderer;
 
 	bool isUpdatingActors {false}; //sert à lock pour empecher d'ajouter des actors quand c'est pas la bonne situation
 	vector<Actor*> actors;
 	vector<Actor*> pendingActors;
-
-	//pour le shooter
 	vector<Asteroid*> asteroids;
 
 };

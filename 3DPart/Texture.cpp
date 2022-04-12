@@ -8,7 +8,7 @@ void Texture::Unload() {
 	}
 }
 
-bool Texture::Load(IRenderer& renderer, const string& filenameP) {
+bool Texture::LoadSDL(RendererSDL& renderer, const string& filenameP) {
 	filename = filenameP;
 	//load from file
 	SDL_Surface* surf = IMG_Load(filename.c_str());

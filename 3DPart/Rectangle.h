@@ -28,6 +28,5 @@ struct Rectangle
 	friend bool operator!=(const Rectangle& left, const Rectangle& right) {
 		return !(left == right);
 	}
-
 	static const Rectangle nullRect;
 };

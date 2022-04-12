@@ -7,7 +7,6 @@ class SpriteComponent : public Component
 public:
 	SpriteComponent(Actor* ownerP, Texture& textureP, int drawOrderP = 100);
 	virtual ~SpriteComponent();
-	SpriteComponent() = delete;
 	SpriteComponent(const SpriteComponent&) = delete;
 	SpriteComponent& operator=(const SpriteComponent&) = delete;
 

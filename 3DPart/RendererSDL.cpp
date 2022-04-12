@@ -2,6 +2,7 @@
 #include "Log.h"
 #include "Texture.h"
 #include "Maths.h"
+#include "Actor.h"
 #include "SpriteComponent.h"
 #include <SDL_image.h>
 
@@ -34,8 +35,6 @@ void RendererSDL::EndDraw()
 {
 	SDL_RenderPresent(SDLRenderer);
 }
-
-
 
 void RendererSDL::DrawRect(Rectangle& rect)
 {
