@@ -34,3 +34,7 @@ VertexArray::~VertexArray() {
 	glDeleteBuffers(1, &indexBuffer);
 	glDeleteVertexArrays(1, &vertexArray);
 }
+
+void VertexArray::SetActive() {
+	glBindVertexArray(vertexArray);
+}
