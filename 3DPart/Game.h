@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Window.h"
-#include "RendererSDL.h"
+#include "RendererOGL.h"
 #include "Vector2.h"
 #include "Actor.h"
 #include "SpriteComponent.h"

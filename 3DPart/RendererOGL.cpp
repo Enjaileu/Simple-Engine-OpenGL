@@ -1,7 +1,4 @@
 #include "RendererOGL.h"
-//#include "glew.h"
-#include "Rectangle.h"
-#include "Vector2.h"
 #include "Log.h"
 #include "SpriteComponent.h"
 
