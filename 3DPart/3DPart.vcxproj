@@ -76,7 +76,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\..\SDL\SDL2-2.0.12\include;..\..\SDL\SDL2_image-2.0.5\include;..\..\SDL\SDL2_mixer-2.0.4\include;..\..\SDL\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\SDL\SDL2-2.0.12\lib\x64;..\..\SDL\SDL2_image-2.0.5\lib\x64;..\..\SDL\SDL2_mixer-2.0.4\lib\x64;..\..\SDL\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\..\SDL\SDL2-2.0.12\lib\x64;..\..\SDL\SDL2_image-2.0.5\lib\x64;..\..\SDL\SDL2_mixer-2.0.4\lib\x64;..\..\SDL\SDL2_ttf-2.0.15\lib\x64;..\..\SDL\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -102,11 +102,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../../SDL/glew-2.1.0/include/GL;../../SDL/SDL2-2.0.12/include;../../SDL/DL2_ttf-2.0.15/include;../../SDL/SDL2_mixer-2.0.4/include;../../SDL/rapidjson/include/rapidjson;../../SDL/SDL2_image-2.0.5/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../SDL/SDL2_image-2.0.5/lib/x64;../../SDL/SDL2_mixer-2.0.4/lib/x64;../../SDL/SDL2_ttf-2.0.15/lib/x64;../../SDL/SDL2-2.0.12/lib/x64;../../SDL/glew-2.1.0/lib/Release/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -157,6 +159,7 @@
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="RendererOGL.cpp" />
     <ClCompile Include="RendererSDL.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
@@ -183,6 +186,7 @@
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="RendererOGL.h" />
     <ClInclude Include="RendererSDL.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="SpriteComponent.h" />

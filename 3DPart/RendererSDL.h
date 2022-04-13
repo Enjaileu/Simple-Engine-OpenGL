@@ -1,8 +1,8 @@
 #pragma once
-#include "Rectangle.h"
 #include <SDL.h>
 #include "IRenderer.h"
 #include <vector>
+#include "Rectangle.h"
 
 class RendererSDL : public IRenderer 
 {
