@@ -32,6 +32,8 @@ void Game::Load() {
 	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Asteroid.png", "Asteroid");
 	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Laser.png", "Laser");
 
+	Assets::LoadShader("Res\\Basic.vert", "Res\\Basic.frag", "", "", "", "Basic");
+
 	//Controlled ship
 	Ship* ship = new Ship();
 	ship->SetPosition(Vector2{ 100, 300 });

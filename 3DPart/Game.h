@@ -23,7 +23,7 @@ public:
 	Game(Game&&) = delete;
 	Game& operator=(Game&&) = delete;
 
-	RendererSDL& GetRenderer() { return renderer; }
+	RendererOGL& GetRenderer() { return renderer; }
 
 	//Game Specific
 	vector<Asteroid*>& GetAsteroids() { return asteroids; }
@@ -50,7 +50,7 @@ private:
 
 	bool isRunning{ true };
 	Window window;
-	RendererSDL renderer;
+	RendererOGL renderer;
 
 	bool isUpdatingActors {false}; //sert à lock pour empecher d'ajouter des actors quand c'est pas la bonne situation
 	vector<Actor*> actors;
