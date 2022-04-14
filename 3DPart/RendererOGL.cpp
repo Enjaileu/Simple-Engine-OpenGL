@@ -1,6 +1,7 @@
 #include "RendererOGL.h"
 #include "Log.h"
 #include "SpriteComponent.h"
+#include <iostream>
 
 #include <SDL_image.h>
 
@@ -32,8 +33,11 @@ bool RendererOGL::Initialize(Window& windowP) {
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
 	context = SDL_GL_CreateContext(windowP.getSDLWindow());
+	
 	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK) {
+	const GLenum err = glewInit();
+	if (err != GLEW_OK) {
+		std::cout << glewGetErrorString(err) << std::endl;
 		Log::error(LogCategory::Video, "Failed to initialize GLEW");
 		return false;
 	}
