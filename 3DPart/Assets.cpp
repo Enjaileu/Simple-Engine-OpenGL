@@ -52,7 +52,9 @@ Shader& Assets::GetShader(const string& name)
 
 Texture Assets::LoadTextureFromFile(IRenderer& renderer, const string& filename) {
 	Texture texture;
-	texture.LoadSDL(dynamic_cast<RendererSDL&>(renderer), filename);
+    if (renderer.GetType() == IRenderer::Type::SDL) {
+        texture.LoadSDL(dynamic_cast<RendererSDL&>(renderer), filename);
+    }
 	return texture;
 }
 
