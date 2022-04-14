@@ -111,6 +111,7 @@ void Game::Update(float dt)
 		actor->Update(dt);
 	}
 	for (auto actor : pendingActors) {
+		actor->ComputeWorldTransform();
 		actors.emplace_back(actor);
 	}
 	pendingActors.clear();

@@ -2,6 +2,8 @@
 #include <vector>
 #include "Vector2.h"
 #include <SDL_stdinc.h>
+#include "Matrix4.h"
+
 using std::vector;
 
 class Game;
@@ -41,12 +43,18 @@ public:
 	void ProcessInput(const Uint8* keyState);
 	virtual void ActorInput(const Uint8* keyState);
 
+	const Matrix4& GetWorldTransform() const { return worldTransform; }
+	void ComputeWorldTransform();
+
 private:
 	Game& game;
 	ActorState state{ Actor::ActorState::Active };
 	Vector2 position{ Vector2::zero };
 	float scale{ 1.0f };
-	float rotation{ 0.0f }; // in radians
+	float rotation{ 0.0f };
+
+	Matrix4 worldTransform;
+	bool mustRecomputeWorldTransfrom;
 
 	vector<Component*> components;
 };
