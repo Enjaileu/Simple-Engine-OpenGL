@@ -32,12 +32,14 @@ void Game::Load() {
 	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Asteroid.png", "Asteroid");
 	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Laser.png", "Laser");
 
-	Assets::LoadShader("Res\\Basic.vert", "Res\\Basic.frag", "", "", "", "Basic");
+	//Assets::LoadShader("Res\\Basic.vert", "Res\\Basic.frag", "", "", "", "Basic");
+	Assets::LoadShader("Res\\Transform.vert", "Res\\Basic.frag", "", "", "", "Transform");
 
 	//Controlled ship
 	Ship* ship = new Ship();
 	ship->SetPosition(Vector2{ 100, 300 });
 
+	/*
 	//BG, create the "far back" bg the the closer one
 	vector<Texture*> bgTexsFar{
 		&Assets::GetTexture("Farback01"),
@@ -53,7 +55,7 @@ void Game::Load() {
 	};
 	Actor* bgClose = new Actor();
 	BGSpriteComponent* bgSpritesClose = new BGSpriteComponent(bgClose, bgTexsClose);
-	bgSpritesClose->SetScrollSpeed(-200.0f);
+	bgSpritesClose->SetScrollSpeed(-200.0f);*/
 
 	//Asteroids
 	const int asteroidNumber = 20;
@@ -61,17 +63,6 @@ void Game::Load() {
 		new Asteroid();
 	}
 
-}
-
-void Game::Unload() {
-	//delete actors
-	//because actor calls removeActor, have to use different style loop
-	while (!actors.empty()) {
-		delete actors.back();
-	}
-
-	//resources
-	Assets::Clear();
 }
 
 void Game::ProcessInput()
@@ -110,6 +101,7 @@ void Game::Update(float dt)
 	for (auto actor : actors) {
 		actor->Update(dt);
 	}
+	isUpdatingActors = false;
 	for (auto actor : pendingActors) {
 		actor->ComputeWorldTransform();
 		actors.emplace_back(actor);
@@ -135,6 +127,27 @@ void Game::Render()
 	renderer.EndDraw();
 }
 
+void Game::AddAsteroid(Asteroid* asteroid) {
+	asteroids.emplace_back(asteroid);
+}
+
+void Game::RemoveAsteroid(Asteroid* asteroid) {
+	auto iter = std::find(begin(asteroids), end(asteroids), asteroid);
+	if (iter != asteroids.end()) {
+		asteroids.erase(iter);
+	}
+}
+
+void Game::Unload() {
+	//delete actors
+	//because actor calls removeActor, have to use different style loop
+	while (!actors.empty()) {
+		delete actors.back();
+	}
+
+	//resources
+	Assets::Clear();
+}
 void Game::Loop()
 {
 	Timer timer;
@@ -176,16 +189,5 @@ void Game::RemoveActor(Actor* actor) {
 	if (iter != end(actors)) {
 		std::iter_swap(iter, end(actors) - 1);
 		actors.pop_back();
-	}
-}
-
-void Game::AddAsteroid(Asteroid* asteroid) {
-	asteroids.emplace_back(asteroid);
-}
-
-void Game::RemoveAsteroid(Asteroid* asteroid) {
-	auto iter = std::find(begin(asteroids), end(asteroids), asteroid);
-	if (iter != asteroids.end()) {
-		asteroids.erase(iter);
 	}
 }

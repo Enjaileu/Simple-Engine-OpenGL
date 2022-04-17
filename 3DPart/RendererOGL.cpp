@@ -2,6 +2,7 @@
 #include "Assets.h"
 #include "Log.h"
 #include "SpriteComponent.h"
+#include "Actor.h"
 #include <iostream>
 
 #include <SDL_image.h>
@@ -42,14 +43,6 @@ bool RendererOGL::Initialize(Window& windowP) {
 		Log::error(LogCategory::Video, "Failed to initialize GLEW.");
 		return false;
 	}
-	/*
-	glewExperimental = GL_TRUE;
-	const GLenum err = glewInit();
-	if (err != GLEW_OK) {
-		std::cout << glewGetErrorString(err) << std::endl;
-		Log::error(LogCategory::Video, "Failed to initialize GLEW");
-		return false;
-	}*/
 
 	//On some platform, GLEW will emit a begin error code so clear it
 	glGetError();
@@ -60,7 +53,7 @@ bool RendererOGL::Initialize(Window& windowP) {
 	}
 
 	vertexArray = new VertexArray(vertices, 4, indices, 6);
-	shader = &Assets::GetShader("Basic");
+	shader = &Assets::GetShader("Transform");
 	return true;
 }
 
@@ -73,6 +66,7 @@ void RendererOGL::BeginDraw() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// Active shader and vertex array
 	shader->use();
+	shader->setMatrix4("uViewProj", viewProj);
 	vertexArray->SetActive();
 }
 
@@ -81,10 +75,10 @@ void RendererOGL::Draw() {
 }
 
 void RendererOGL::DrawSprite(const Actor& actor, const class Texture& tex, Rectangle srcRect, Vector2 origin, Flip flip) const {
-	//Matrix4 scaleMat = Matrix4::createScale((float)tex.getWidth(), (float)tex.getHeight(), 1.0f);
-	//Matrix4 world = scaleMat * actor.getWorldTransform();
-	//Matrix4 pixelTranslation = Matrix4::createTranslation(Vector3(-WINDOW_WIDTH / 2 - origin.x, -WINDOW_HEIGHT / 2 - origin.y, 0.0f)); // Screen pixel coordinates
-	//shader->setMatrix4("uWorldTransform", world * pixelTranslation);
+	Matrix4 scaleMat = Matrix4::createScale((float)tex.GetWidth(), (float)tex.GetHeight(), 1.0f);
+	Matrix4 world = scaleMat * actor.GetWorldTransform();
+	Matrix4 pixelTranslation = Matrix4::createTranslation(Vector3(-WINDOW_WIDTH / 2 - origin.x, -WINDOW_HEIGHT / 2 - origin.y, 0.0f)); // Screen pixel coordinates
+	shader->setMatrix4("uWorldTransform", world * pixelTranslation);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
