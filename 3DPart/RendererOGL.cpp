@@ -1,4 +1,5 @@
 #include "RendererOGL.h"
+#include "Assets.h"
 #include "Log.h"
 #include "SpriteComponent.h"
 #include <iostream>
@@ -8,7 +9,9 @@
 RendererOGL::RendererOGL() :
 	window{nullptr},
 	vertexArray{nullptr},
-	context{nullptr}{}
+	context{nullptr},
+	shader(nullptr),
+	viewProj(Matrix4::createSimpleViewProj(WINDOW_WIDTH, WINDOW_HEIGHT)){}
 
 RendererOGL::~RendererOGL(){}
 
@@ -33,14 +36,20 @@ bool RendererOGL::Initialize(Window& windowP) {
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
 	context = SDL_GL_CreateContext(windowP.getSDLWindow());
-	
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK)
+	{
+		Log::error(LogCategory::Video, "Failed to initialize GLEW.");
+		return false;
+	}
+	/*
 	glewExperimental = GL_TRUE;
 	const GLenum err = glewInit();
 	if (err != GLEW_OK) {
 		std::cout << glewGetErrorString(err) << std::endl;
 		Log::error(LogCategory::Video, "Failed to initialize GLEW");
 		return false;
-	}
+	}*/
 
 	//On some platform, GLEW will emit a begin error code so clear it
 	glGetError();
@@ -51,6 +60,7 @@ bool RendererOGL::Initialize(Window& windowP) {
 	}
 
 	vertexArray = new VertexArray(vertices, 4, indices, 6);
+	shader = &Assets::GetShader("Basic");
 	return true;
 }
 
@@ -61,6 +71,9 @@ void RendererOGL::BeginDraw() {
 	//enable alpha blending on the color buffer
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// Active shader and vertex array
+	shader->use();
+	vertexArray->SetActive();
 }
 
 void RendererOGL::Draw() {
@@ -79,6 +92,11 @@ void RendererOGL::EndDraw() {
 	SDL_GL_SwapWindow(window->getSDLWindow());
 }
 
+void RendererOGL::Close() {
+	SDL_GL_DeleteContext(context);
+	delete vertexArray;
+}
+
 void RendererOGL::AddSprite(SpriteComponent* sprite)
 {
 	//insert the sprite at the right place in function of drawOrder
@@ -94,11 +112,6 @@ void RendererOGL::RemoveSprite(SpriteComponent* sprite)
 {
 	auto iter = std::find(begin(sprites), end(sprites), sprite);
 	sprites.erase(iter);
-}
-
-void RendererOGL::Close() {
-	SDL_GL_DeleteContext(context);
-	delete vertexArray;
 }
 
 void RendererOGL::DrawSprites()

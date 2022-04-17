@@ -1,8 +1,8 @@
 #include "Assets.h"
-#include "Log.h"
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include "Log.h"
 
 map<string, Texture> Assets::textures; //because it is static, define it
 map<string, Shader> Assets::shaders;
@@ -21,6 +21,23 @@ Texture& Assets::GetTexture(const string& name) {
 	return textures[name];
 }
 
+Shader Assets::LoadShader(const string& vShaderFile, const string& fShaderFile, const string& tcShaderFile, const string& teShaderFile, const string& gShaderFile, const string& name)
+{
+    shaders[name] = LoadShaderFromFile(vShaderFile, fShaderFile, tcShaderFile, teShaderFile, gShaderFile);
+    return shaders[name];
+}
+
+
+Shader& Assets::GetShader(const string& name)
+{
+    if (shaders.find(name) == end(shaders)) {
+        std::ostringstream loadError;
+        loadError << "Shader " << name << " does not exist in assets manager.";
+        Log::error(LogCategory::Application, loadError.str());
+    }
+    return shaders[name];
+}
+
 void Assets::Clear() {
 	// delete properly all textures
 	for (auto iter : textures) {
@@ -34,28 +51,15 @@ void Assets::Clear() {
 	shaders.clear();
 }
 
-Shader Assets::LoadShader(const string& vShaderFile, const string& fShaderFile, const string& tcShaderFile, const string& teShaderFile, const string& gShaderFile, const string& name)
-{
-	shaders[name] = LoadShaderFromFile(vShaderFile, fShaderFile, tcShaderFile, teShaderFile, gShaderFile);
-	return shaders[name];
-}
-
-Shader& Assets::GetShader(const string& name)
-{
-	if (shaders.find(name) == end(shaders)) {
-		std::ostringstream loadError;
-		loadError << "Shader " << name << " does not exist in assets manager.";
-		Log::error(LogCategory::Application, loadError.str());
-	}
-	return shaders[name];
-}
-
 Texture Assets::LoadTextureFromFile(IRenderer& renderer, const string& filename) {
 	Texture texture;
     if (renderer.GetType() == IRenderer::Type::SDL) {
         texture.LoadSDL(dynamic_cast<RendererSDL&>(renderer), filename);
     }
-	return texture;
+    else if (renderer.GetType() == IRenderer::Type::OGL) {
+        texture.LoadOGL(dynamic_cast<RendererOGL&>(renderer), filename);
+    }
+    return texture;
 }
 
 Shader Assets::LoadShaderFromFile(const string& vShaderFile, const string& fShaderFile, const string& tcShaderFile, const string& teShaderFile, const string& gShaderFile)

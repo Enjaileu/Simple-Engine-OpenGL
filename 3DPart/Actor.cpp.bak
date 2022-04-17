@@ -35,48 +35,12 @@ void Actor::SetRotation(float rotationP) {
 	rotation = rotationP;
 	mustRecomputeWorldTransfrom = true;
 }
-
-void Actor::SetState(ActorState stateP) {
-	state = stateP;
-}
-
-Vector2  Actor::GetForward() const {
-	//return Vector2(Maths::cos(rotation), -Maths::sin(rotation)); // sin inversé car dans jeu 3D, les axes positifs sont dans des positions negatives
-	return Vector2(Maths::cos(rotation), Maths::sin(rotation)); // sin positif pour openGL
-}
-
-void Actor::ComputeWorldTransform() {
-	if (mustRecomputeWorldTransfrom) {
-		mustRecomputeWorldTransfrom = false;
-		worldTransform = Matrix4::createScale(scale);
-		worldTransform *= Matrix4::createRotationZ(rotation);
-		worldTransform *= Matrix4::createTranslation(Vector3(position.x, position.y, 0.0f));
-
-		for (auto component : components) {
-			component->OnUpdateWorldTransform();
-		}
-	}
-}
-
-void Actor::ProcessInput(const Uint8* keyState) {
-	if (state == Actor::ActorState::Active) {
-		for (auto component : components) {
-			component->ProcessInput(keyState);
-		}
-		ActorInput(keyState);
-	}
-}
-
-void Actor::ActorInput(const Uint8* keyState) {
-
-}
+void Actor::SetState(ActorState stateP) { state = stateP; }
 
 void Actor::Update(float dt) {
 	if (state == Actor::ActorState::Active) {
-		ComputeWorldTransform();
 		UpdateComponents(dt);
 		UpdateActor(dt);
-		ComputeWorldTransform();
 	}
 }
 void Actor::UpdateComponents(float dt) {
@@ -86,7 +50,10 @@ void Actor::UpdateComponents(float dt) {
 }
 void Actor::UpdateActor(float dt){}
 
-
+Vector2  Actor::GetForward() const {
+	//return Vector2(Maths::cos(rotation), -Maths::sin(rotation)); // sin inversé car dans jeu 3D, les axes positifs sont dans des positions negatives
+	return Vector2(Maths::cos(rotation), Maths::sin(rotation)); // sin positif pour openGL
+}
 
 void Actor::AddComponent(Component* component) {
 	//find the insertion point in the sorted vector
@@ -110,5 +77,28 @@ void Actor::RemoveComponent(Component* component) {
 	}
 }
 
+void Actor::ProcessInput(const Uint8* keyState) {
+	if (state == Actor::ActorState::Active) {
+		for (auto component : components) {
+			component->ProcessInput(keyState);
+		}
+		ActorInput(keyState);
+	}
+}
 
+void Actor::ActorInput(const Uint8* keyState) {
 
+}
+
+void Actor::ComputeWorldTransform() {
+	if (mustRecomputeWorldTransfrom) {
+		mustRecomputeWorldTransfrom = false;
+		worldTransform = Matrix4::createScale(scale);
+		worldTransform *= Matrix4::createRotationZ(rotation);
+		worldTransform *= Matrix4::createTranslation(Vector3(position.x, position.y, 0.0f));
+
+		for(auto component : components){
+			component->OnUpdateWorldTransform();
+		}
+	}
+}
