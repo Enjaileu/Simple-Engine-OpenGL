@@ -69,6 +69,12 @@
     <None Include="Res\Transform.vert">
       <Filter>shaders</Filter>
     </None>
+    <None Include="Res\Sprite.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Sprite.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="shaders">

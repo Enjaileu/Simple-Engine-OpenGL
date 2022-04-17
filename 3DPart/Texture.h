@@ -16,6 +16,7 @@ public:
 	bool LoadOGL(RendererOGL& rendererP, const string& filenameP);
 	inline SDL_Texture* toSDLTexture() const { return SDLTexture; }
 	void UpdateInfo(int& widthOut, int& heightOut);
+	void SetActive() const;
 
 	inline int GetWidth() const { return width; }
 	inline int GetHeight() const { return height; }
@@ -25,5 +26,6 @@ private:
 	SDL_Texture* SDLTexture{ nullptr };
 	int width{ 0 };
 	int height{ 0 };
+	unsigned int textureID;
 };
 

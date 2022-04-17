@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include "Log.h"
+#include "RendererOGL.h"
 
 map<string, Texture> Assets::textures; //because it is static, define it
 map<string, Shader> Assets::shaders;

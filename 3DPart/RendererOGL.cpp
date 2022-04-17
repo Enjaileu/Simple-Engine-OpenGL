@@ -11,8 +11,8 @@ RendererOGL::RendererOGL() :
 	window{nullptr},
 	vertexArray{nullptr},
 	context{nullptr},
-	shader(nullptr),
-	viewProj(Matrix4::createSimpleViewProj(WINDOW_WIDTH, WINDOW_HEIGHT)){}
+	shader{ nullptr },
+	viewProj{ Matrix4::createSimpleViewProj(WINDOW_WIDTH, WINDOW_HEIGHT) }{}
 
 RendererOGL::~RendererOGL(){}
 
@@ -53,7 +53,7 @@ bool RendererOGL::Initialize(Window& windowP) {
 	}
 
 	vertexArray = new VertexArray(vertices, 4, indices, 6);
-	shader = &Assets::GetShader("Transform");
+	shader = &Assets::GetShader("Sprite");
 	return true;
 }
 
@@ -79,6 +79,7 @@ void RendererOGL::DrawSprite(const Actor& actor, const class Texture& tex, Recta
 	Matrix4 world = scaleMat * actor.GetWorldTransform();
 	Matrix4 pixelTranslation = Matrix4::createTranslation(Vector3(-WINDOW_WIDTH / 2 - origin.x, -WINDOW_HEIGHT / 2 - origin.y, 0.0f)); // Screen pixel coordinates
 	shader->setMatrix4("uWorldTransform", world * pixelTranslation);
+	tex.SetActive();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 

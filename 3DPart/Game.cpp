@@ -32,14 +32,14 @@ void Game::Load() {
 	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Asteroid.png", "Asteroid");
 	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Laser.png", "Laser");
 
-	//Assets::LoadShader("Res\\Basic.vert", "Res\\Basic.frag", "", "", "", "Basic");
+	Assets::LoadShader("Res\\Basic.vert", "Res\\Basic.frag", "", "", "", "Basic");
 	Assets::LoadShader("Res\\Transform.vert", "Res\\Basic.frag", "", "", "", "Transform");
+	Assets::LoadShader("Res\\Sprite.vert", "Res\\Sprite.frag", "", "", "", "Sprite");
 
 	//Controlled ship
 	Ship* ship = new Ship();
 	ship->SetPosition(Vector2{ 100, 300 });
 
-	/*
 	//BG, create the "far back" bg the the closer one
 	vector<Texture*> bgTexsFar{
 		&Assets::GetTexture("Farback01"),
@@ -55,7 +55,7 @@ void Game::Load() {
 	};
 	Actor* bgClose = new Actor();
 	BGSpriteComponent* bgSpritesClose = new BGSpriteComponent(bgClose, bgTexsClose);
-	bgSpritesClose->SetScrollSpeed(-200.0f);*/
+	bgSpritesClose->SetScrollSpeed(-200.0f);
 
 	//Asteroids
 	const int asteroidNumber = 20;
