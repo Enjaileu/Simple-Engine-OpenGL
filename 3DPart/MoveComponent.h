@@ -15,7 +15,7 @@ public:
 	void SetForwardSpeed(float forwardSpeedP) { forwardSpeed = forwardSpeedP; }
 	void SetGetAngularSpeed(float angularSpeedP) { angularSpeed = angularSpeedP; }
 	
-	void Update(float dt);
+	void Update(float dt) override;
 
 private:
 	float forwardSpeed;

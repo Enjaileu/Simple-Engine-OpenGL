@@ -8,7 +8,8 @@ float CircleCollisionComponent::GetRadius() const {
 }
 
 const Vector2 CircleCollisionComponent::GetCenter() const {
-	return owner.GetPosition();
+	Vector3 position = owner.GetPosition();
+	return Vector2(position.x, position.y);
 }
 
 bool IsIntersect(const CircleCollisionComponent& a, const CircleCollisionComponent& b) {

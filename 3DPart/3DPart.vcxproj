@@ -147,23 +147,20 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AnimSpriteComponent.cpp" />
     <ClCompile Include="Assets.cpp" />
-    <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="BGSpriteComponent.cpp" />
     <ClCompile Include="CircleCollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputComponent.cpp" />
-    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RendererOGL.cpp" />
-    <ClCompile Include="RendererSDL.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -176,24 +173,21 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AnimSpriteComponent.h" />
     <ClInclude Include="Assets.h" />
-    <ClInclude Include="Asteroid.h" />
     <ClInclude Include="BGSpriteComponent.h" />
     <ClInclude Include="CircleCollisionComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="IRenderer.h" />
-    <ClInclude Include="Laser.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="MoveComponent.h" />
+    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RendererOGL.h" />
-    <ClInclude Include="RendererSDL.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="Ship.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
@@ -203,11 +197,11 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Res\Basic.frag" />
-    <None Include="Res\Basic.vert" />
-    <None Include="Res\Sprite.frag" />
-    <None Include="Res\Sprite.vert" />
-    <None Include="Res\Transform.vert" />
+    <None Include="Res\Shaders\Basic.frag" />
+    <None Include="Res\Shaders\Basic.vert" />
+    <None Include="Res\Shaders\Sprite.frag" />
+    <None Include="Res\Shaders\Sprite.vert" />
+    <None Include="Res\Shaders\Transform.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

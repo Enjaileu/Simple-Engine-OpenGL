@@ -4,13 +4,11 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AnimSpriteComponent.cpp" />
     <ClCompile Include="Assets.cpp" />
-    <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="BGSpriteComponent.cpp" />
     <ClCompile Include="CircleCollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputComponent.cpp" />
-    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Matrix4.cpp" />
@@ -18,9 +16,7 @@
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RendererOGL.cpp" />
-    <ClCompile Include="RendererSDL.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -28,19 +24,18 @@
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AnimSpriteComponent.h" />
     <ClInclude Include="Assets.h" />
-    <ClInclude Include="Asteroid.h" />
     <ClInclude Include="BGSpriteComponent.h" />
     <ClInclude Include="CircleCollisionComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="IRenderer.h" />
-    <ClInclude Include="Laser.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="Matrix4.h" />
@@ -48,9 +43,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RendererOGL.h" />
-    <ClInclude Include="RendererSDL.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="Ship.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
@@ -58,27 +51,28 @@
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="Window.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Res\Basic.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="Res\Basic.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="Res\Transform.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="Res\Sprite.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="Res\Sprite.vert">
-      <Filter>shaders</Filter>
-    </None>
+    <ClInclude Include="Quaternion.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="shaders">
       <UniqueIdentifier>{924a2f48-8ecf-4561-a138-728c6dbd92bb}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Res\Shaders\Basic.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\Basic.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\Sprite.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\Sprite.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\Transform.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

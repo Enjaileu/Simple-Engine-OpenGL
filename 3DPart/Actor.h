@@ -24,37 +24,37 @@ public:
 
 	Game& GetGame() const { return game; }
 	const ActorState GetState() const { return state; }
-	const Vector2 GetPosition() const { return position; }
+	const Vector3 GetPosition() const { return position; }
 	const float GetScale() const { return scale; }
-	const float GetRotation() const { return rotation; }
-	Vector2 GetForward() const;
+	const Quaternion GetRotation() const { return rotation; }
+	const Matrix4& GetWorldTransform() const { return worldTransform; }
 
-	void SetPosition(Vector2 positionP);
+	void SetPosition(Vector3 positionP);
 	void SetScale(float scaleP);
-	void SetRotation(float rotationP);
+	void SetRotation(Quaternion rotationP);
 	void SetState(ActorState stateP);
 
+	Vector3 GetForward() const;
+	void ComputeWorldTransform();
+
+
+	void ProcessInput(const Uint8* keyState);
+	virtual void ActorInput(const Uint8* keyState);
 	void Update(float dt);
 	void UpdateComponents(float dt);
 	virtual void UpdateActor(float dt);
 	void AddComponent(Component* component);
 	void RemoveComponent(Component* component);
 
-	void ProcessInput(const Uint8* keyState);
-	virtual void ActorInput(const Uint8* keyState);
-
-	const Matrix4& GetWorldTransform() const { return worldTransform; }
-	void ComputeWorldTransform();
-
 private:
 	Game& game;
-	ActorState state{ Actor::ActorState::Active };
-	Vector2 position{ Vector2::zero };
-	float scale{ 1.0f };
-	float rotation{ 0.0f };
+	ActorState state;
+	Vector3 position;
+	float scale;
+	Quaternion rotation;
 
 	Matrix4 worldTransform;
-	bool mustRecomputeWorldTransfrom;
+	bool mustRecomputeWorldTransform;
 
 	vector<Component*> components;
 };

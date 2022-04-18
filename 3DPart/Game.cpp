@@ -1,13 +1,7 @@
 #include "Game.h"
 #include "Actor.h"
-#include "SpriteComponent.h"
-#include "AnimSpriteComponent.h"
 #include "Timer.h"
-#include "Log.h"
 #include "Assets.h"
-#include "BGSpriteComponent.h"
-#include "Asteroid.h"
-#include "Ship.h"
 
 bool Game::Initialize()
 {
@@ -20,47 +14,13 @@ bool Game::Initialize()
 void Game::Load() {
 	
 	//Load Textures
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Ship01.png", "Ship01");
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Ship02.png", "Ship02");
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Ship03.png", "Ship03");
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Ship04.png", "Ship04");
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Farback01.png", "Farback01");
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Farback02.png", "Farback02");
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Stars.png", "Stars");
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Asteroid.png", "Asteroid");
-	Assets::LoadTexture(renderer, "..\\Ressources\\Shooter_Sprites\\Laser.png", "Laser");
-
-	Assets::LoadShader("Res\\Basic.vert", "Res\\Basic.frag", "", "", "", "Basic");
-	Assets::LoadShader("Res\\Transform.vert", "Res\\Basic.frag", "", "", "", "Transform");
+	Assets::LoadTexture(renderer, "Res\\Textures\\HealthBar.png", "HealthBar");
 	Assets::LoadShader("Res\\Sprite.vert", "Res\\Sprite.frag", "", "", "", "Sprite");
 
-	//Controlled ship
-	Ship* ship = new Ship();
-	ship->SetPosition(Vector2{ 100, 300 });
-
-	//BG, create the "far back" bg
-	vector<Texture*> bgTexsFar{
-		&Assets::GetTexture("Farback01"),
-		&Assets::GetTexture("Farback02")
-	};
-	Actor* bgFar = new Actor();
-	BGSpriteComponent* bgSpritesFar = new BGSpriteComponent(bgFar, bgTexsFar);
-	bgSpritesFar->SetScrollSpeed(-100.0f);
-
-	// and the closest one
-	Actor* bgClose = new Actor();
-	vector<Texture*> bgTexsClose{
-		&Assets::GetTexture("Stars"),
-		&Assets::GetTexture("Stars")
-	};
-	BGSpriteComponent* bgSpritesClose = new BGSpriteComponent(bgClose, bgTexsClose);
-	bgSpritesClose->SetScrollSpeed(-200.0f);
-
-	//Asteroids
-	const int asteroidNumber = 20;
-	for (int i = 0; i < asteroidNumber; ++i) {
-		new Asteroid();
-	}
+	//ui
+	Actor* ui = new Actor();
+	ui->SetPosition(Vector3(-350.f, -350.f, 0.f));
+	SpriteComponent* sc = new SpriteComponent(ui, Assets::GetTexture("HealthBar"));
 
 }
 
@@ -124,17 +84,6 @@ void Game::Render()
 	renderer.BeginDraw();
 	renderer.Draw();
 	renderer.EndDraw();
-}
-
-void Game::AddAsteroid(Asteroid* asteroid) {
-	asteroids.emplace_back(asteroid);
-}
-
-void Game::RemoveAsteroid(Asteroid* asteroid) {
-	auto iter = std::find(begin(asteroids), end(asteroids), asteroid);
-	if (iter != asteroids.end()) {
-		asteroids.erase(iter);
-	}
 }
 
 void Game::Unload() {

@@ -5,7 +5,6 @@
 #include "Vector2.h"
 #include "Actor.h"
 #include "SpriteComponent.h"
-#include "Asteroid.h"
 
 using std::vector;
 
@@ -24,11 +23,6 @@ public:
 	Game& operator=(Game&&) = delete;
 
 	RendererOGL& GetRenderer() { return renderer; }
-
-	//Game Specific
-	vector<Asteroid*>& GetAsteroids() { return asteroids; }
-	void AddAsteroid(Asteroid* asteroid);
-	void RemoveAsteroid(Asteroid* asteroid);
 
 private:
 	Game(){};
@@ -55,7 +49,6 @@ private:
 	bool isUpdatingActors {false}; //sert à lock pour empecher d'ajouter des actors quand c'est pas la bonne situation
 	vector<Actor*> actors;
 	vector<Actor*> pendingActors;
-	vector<Asteroid*> asteroids;
 
 };
 

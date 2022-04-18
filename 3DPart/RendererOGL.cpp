@@ -3,7 +3,7 @@
 #include "Log.h"
 #include "SpriteComponent.h"
 #include "Actor.h"
-#include <iostream>
+#include "Rectangle.h"
 
 #include <SDL_image.h>
 
@@ -11,7 +11,6 @@ RendererOGL::RendererOGL() :
 	window{nullptr},
 	vertexArray{nullptr},
 	context{nullptr},
-	shader{ nullptr },
 	viewProj{ Matrix4::createSimpleViewProj(WINDOW_WIDTH, WINDOW_HEIGHT) }{}
 
 RendererOGL::~RendererOGL(){}
@@ -29,6 +28,9 @@ bool RendererOGL::Initialize(Window& windowP) {
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+
+	//depth buffering
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
 	//enable double buffering
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -52,8 +54,7 @@ bool RendererOGL::Initialize(Window& windowP) {
 		return false;
 	}
 
-	vertexArray = new VertexArray(vertices, 4, indices, 6);
-	shader = &Assets::GetShader("Sprite");
+	vertexArray = new VertexArray(spriteVertices, 4, indices, 6);
 	return true;
 }
 
@@ -65,8 +66,8 @@ void RendererOGL::BeginDraw() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// Active shader and vertex array
-	shader->use();
-	shader->setMatrix4("uViewProj", viewProj);
+	Assets::GetShader("Sprite").use();
+	Assets::GetShader("Sprite").setMatrix4("uViewProj", viewProj);
 	vertexArray->SetActive();
 }
 
@@ -77,8 +78,7 @@ void RendererOGL::Draw() {
 void RendererOGL::DrawSprite(const Actor& actor, const class Texture& tex, Rectangle srcRect, Vector2 origin, Flip flip) const {
 	Matrix4 scaleMat = Matrix4::createScale((float)tex.GetWidth(), (float)tex.GetHeight(), 1.0f);
 	Matrix4 world = scaleMat * actor.GetWorldTransform();
-	Matrix4 pixelTranslation = Matrix4::createTranslation(Vector3(-WINDOW_WIDTH / 2 - origin.x, -WINDOW_HEIGHT / 2 - origin.y, 0.0f)); // Screen pixel coordinates
-	shader->setMatrix4("uWorldTransform", world * pixelTranslation);
+	Assets::GetShader("Sprite").setMatrix4("uWorldTransform", world /* pixelTranslation*/);
 	tex.SetActive();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

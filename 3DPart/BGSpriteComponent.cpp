@@ -23,8 +23,8 @@ void BGSpriteComponent::Update(float dt) {
 void BGSpriteComponent::Draw(IRenderer& renderer) {
 	//draw chaque bg texture
 	for (auto& bg : textures) {
-		owner.SetPosition(Vector2(bg.offset.x, bg.offset.y));
-		renderer.DrawSprite(owner, bg.texture, Rectangle::nullRect, Vector2::zero, IRenderer::Flip::None);
+		owner.SetPosition(Vector3(0.f, bg.offset.x, bg.offset.y));
+		renderer.DrawSprite(owner, bg.texture, Rectangle::nullRect, Vector2(-screenSize.x / 2, -screenSize.y / 2), IRenderer::Flip::None);
 	}
 }
 

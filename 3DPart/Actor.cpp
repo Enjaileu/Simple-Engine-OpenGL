@@ -6,10 +6,10 @@
 
 Actor::Actor() :
 	state{ Actor::ActorState::Active },
-	position{ Vector2::zero },
+	position{ Vector3::zero },
 	scale{ 1.0f },
-	rotation{0.0f},
-	mustRecomputeWorldTransfrom{true},
+	rotation{Quaternion::identity},
+	mustRecomputeWorldTransform{true},
 	game{ Game::instance() }
 {
 	game.AddActor(this);
@@ -23,34 +23,33 @@ Actor::~Actor() {
 	}
 }
 
-void Actor::SetPosition(Vector2 positionP) { 
+void Actor::SetPosition(Vector3 positionP) { 
 	position = positionP; 
-	mustRecomputeWorldTransfrom = true;
+	mustRecomputeWorldTransform = true;
 }
 void Actor::SetScale(float scaleP) { 
 	scale = scaleP;
-	mustRecomputeWorldTransfrom = true;
+	mustRecomputeWorldTransform = true;
 }
-void Actor::SetRotation(float rotationP) { 
+void Actor::SetRotation(Quaternion rotationP) { 
 	rotation = rotationP;
-	mustRecomputeWorldTransfrom = true;
+	mustRecomputeWorldTransform = true;
 }
 
 void Actor::SetState(ActorState stateP) {
 	state = stateP;
 }
 
-Vector2  Actor::GetForward() const {
-	//return Vector2(Maths::cos(rotation), -Maths::sin(rotation)); // sin inversé car dans jeu 3D, les axes positifs sont dans des positions negatives
-	return Vector2(Maths::cos(rotation), Maths::sin(rotation)); // sin positif pour openGL
+Vector3  Actor::GetForward() const {
+	return Vector3::transform(Vector3::unitX, rotation);
 }
 
 void Actor::ComputeWorldTransform() {
-	if (mustRecomputeWorldTransfrom) {
-		mustRecomputeWorldTransfrom = false;
+	if (mustRecomputeWorldTransform) {
+		mustRecomputeWorldTransform = false;
 		worldTransform = Matrix4::createScale(scale);
-		worldTransform *= Matrix4::createRotationZ(rotation);
-		worldTransform *= Matrix4::createTranslation(Vector3(position.x, position.y, 0.0f));
+		worldTransform *= Matrix4::createFromQuaternion(rotation);
+		worldTransform *= Matrix4::createTranslation(position);
 
 		for (auto component : components) {
 			component->OnUpdateWorldTransform();

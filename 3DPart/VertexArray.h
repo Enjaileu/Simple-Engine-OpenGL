@@ -1,10 +1,10 @@
 #pragma once
 
-constexpr float vertices[] = {
-	-.5f, .5f, 0.f, 0.f, 0.f, //top left
-	.5f, .5f, 0.f, 1.f, 0.f, //top right
-	.5f, -.5f, 0.f,  1.f, 1.f, //bottom right
-	-.5f, -.5f, 0.f, 0.f, 1.f // bottom left
+constexpr float spriteVertices[] = {
+	-.5f, .5f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, //top left
+	.5f, .5f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, //top right
+	.5f, -.5f, 0.f, 0.f, 0.f, 0.f,  1.f, 1.f, //bottom right
+	-.5f, -.5f, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f // bottom left
 };
 
 constexpr unsigned int indices[] = {
