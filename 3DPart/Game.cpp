@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Actor.h"
 #include "SpriteComponent.h"
+#include "AnimSpriteComponent.h"
 #include "Timer.h"
 #include "Log.h"
 #include "Assets.h"
@@ -12,9 +13,6 @@ bool Game::Initialize()
 {
 	bool isWindowInit = window.initialize();
 	bool isRendererInit = renderer.Initialize(window);
-
-	int windowWidth = window.getWidth();
-	int windowHeight = window.getHeight();
 
 	return isWindowInit && isRendererInit; // Return bool && bool && bool ...to detect error
 }
@@ -40,7 +38,7 @@ void Game::Load() {
 	Ship* ship = new Ship();
 	ship->SetPosition(Vector2{ 100, 300 });
 
-	//BG, create the "far back" bg the the closer one
+	//BG, create the "far back" bg
 	vector<Texture*> bgTexsFar{
 		&Assets::GetTexture("Farback01"),
 		&Assets::GetTexture("Farback02")
@@ -49,11 +47,12 @@ void Game::Load() {
 	BGSpriteComponent* bgSpritesFar = new BGSpriteComponent(bgFar, bgTexsFar);
 	bgSpritesFar->SetScrollSpeed(-100.0f);
 
+	// and the closest one
+	Actor* bgClose = new Actor();
 	vector<Texture*> bgTexsClose{
 		&Assets::GetTexture("Stars"),
 		&Assets::GetTexture("Stars")
 	};
-	Actor* bgClose = new Actor();
 	BGSpriteComponent* bgSpritesClose = new BGSpriteComponent(bgClose, bgTexsClose);
 	bgSpritesClose->SetScrollSpeed(-200.0f);
 

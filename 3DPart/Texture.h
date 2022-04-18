@@ -8,8 +8,8 @@ using std::string;
 class Texture
 {
 public:
-	Texture(){}
-	~Texture(){}
+	Texture();
+	~Texture();
 
 	void Unload();
 	bool LoadSDL(RendererSDL& rendererP, const string& filenameP);

@@ -3,6 +3,19 @@
 #include <SDL_Image.h>
 #include <sstream>
 
+Texture::Texture() : 
+	textureID{ 0 },
+	filename{ "" },
+	width{ 0 },
+	height{ 0 },
+	SDLTexture{ nullptr }
+{
+}
+
+Texture::~Texture()
+{
+}
+
 void Texture::Unload() {
 	if (SDLTexture) {
 		SDL_DestroyTexture(SDLTexture);

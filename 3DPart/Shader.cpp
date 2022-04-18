@@ -166,7 +166,7 @@ void Shader::setVector4f(const GLchar* name, const Vector4& value)
 */
 void Shader::setMatrix4(const GLchar* name, const Matrix4& matrix)
 {
-    glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, matrix.getAsFloatPtr());
+    glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_TRUE, matrix.getAsFloatPtr());
 }
 
 void Shader::printShaderInfoLog(GLuint shaderIndex)
