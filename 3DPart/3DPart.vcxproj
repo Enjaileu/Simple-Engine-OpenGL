@@ -148,6 +148,7 @@
     <ClCompile Include="AnimSpriteComponent.cpp" />
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="BGSpriteComponent.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CircleCollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -155,6 +156,8 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Matrix4.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Random.cpp" />
@@ -174,6 +177,7 @@
     <ClInclude Include="AnimSpriteComponent.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="BGSpriteComponent.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleCollisionComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Game.h" />
@@ -182,6 +186,8 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Random.h" />
@@ -199,6 +205,8 @@
   <ItemGroup>
     <None Include="Res\Shaders\Basic.frag" />
     <None Include="Res\Shaders\Basic.vert" />
+    <None Include="Res\Shaders\BasicMesh.frag" />
+    <None Include="Res\Shaders\BasicMesh.vert" />
     <None Include="Res\Shaders\Sprite.frag" />
     <None Include="Res\Shaders\Sprite.vert" />
     <None Include="Res\Shaders\Transform.vert" />

@@ -5,6 +5,7 @@
 #include "Vector2.h"
 #include "Actor.h"
 #include "SpriteComponent.h"
+#include "Camera.h"
 
 using std::vector;
 
@@ -25,7 +26,7 @@ public:
 	RendererOGL& GetRenderer() { return renderer; }
 
 private:
-	Game(){};
+	Game() : isRunning{ true }, isUpdatingActors{ false }, camera{nullptr}{}
 
 public:
 	bool Initialize();
@@ -49,6 +50,8 @@ private:
 	bool isUpdatingActors {false}; //sert à lock pour empecher d'ajouter des actors quand c'est pas la bonne situation
 	vector<Actor*> actors;
 	vector<Actor*> pendingActors;
+
+	Camera* camera;
 
 };
 

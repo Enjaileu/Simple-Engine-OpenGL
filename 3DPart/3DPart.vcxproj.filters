@@ -25,6 +25,9 @@
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshComponent.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -52,6 +55,9 @@
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshComponent.h" />
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="shaders">
@@ -72,6 +78,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="Res\Shaders\Transform.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\BasicMesh.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\BasicMesh.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

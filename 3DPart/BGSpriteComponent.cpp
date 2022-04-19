@@ -1,5 +1,6 @@
 #include "BGSpriteComponent.h"
 #include "Actor.h"
+#include "Rectangle.h"
 
 BGSpriteComponent::BGSpriteComponent(Actor* ownerP, const vector<Texture*>& texturesP, int drawOrderP) :
 	SpriteComponent(ownerP, *texturesP[0], drawOrderP),

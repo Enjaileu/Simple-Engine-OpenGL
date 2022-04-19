@@ -1,6 +1,7 @@
 #include "SpriteComponent.h"
 #include "Actor.h"
 #include "Game.h"
+#include "Rectangle.h"
 
 SpriteComponent::SpriteComponent(Actor* ownerP, Texture& textureP, int drawOrderP):
 	Component{ownerP},

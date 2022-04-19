@@ -13,7 +13,7 @@ public:
 	float GetAngularSpeed() const { return angularSpeed; }
 
 	void SetForwardSpeed(float forwardSpeedP) { forwardSpeed = forwardSpeedP; }
-	void SetGetAngularSpeed(float angularSpeedP) { angularSpeed = angularSpeedP; }
+	void SetAngularSpeed(float angularSpeedP) { angularSpeed = angularSpeedP; }
 	
 	void Update(float dt) override;
 

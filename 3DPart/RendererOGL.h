@@ -4,6 +4,8 @@
 #include "Vector2.h"
 #include "glew.h"
 #include "Shader.h"
+#include "Rectangle.h"
+#include "MeshComponent.h"
 
 #include <vector>
 
@@ -24,16 +26,25 @@ public:
 	void RemoveSprite(class SpriteComponent* sprite);
 	void DrawSprite(const Actor& actor, const class Texture& tex, Rectangle srcRect, Vector2 origin, Flip flip) const;
 
+	void AddMesh(class MeshComponent* mesh);
+	void RemoveMesh(class MeshComponent* mesh);
+	void SetViewMatrix(const Matrix4& viewP);
+
 	void Close();
 	IRenderer::Type GetType() { return Type::OGL; }
 
 private:
+	void DrawMeshes();
 	void DrawSprites();
 
 	Window* window;
-	VertexArray* vertexArray;
+	VertexArray* spriteVertexArray;
 	SDL_GLContext context;
+	Matrix4 spriteViewProj;
+	Matrix4 view;
+	Matrix4 projection;
+
+	std::vector<class MeshComponent*> meshes;
 	std::vector<class SpriteComponent*> sprites;
-	Matrix4 viewProj;
 };
 

@@ -9,9 +9,11 @@
 
 RendererOGL::RendererOGL() :
 	window{nullptr},
-	vertexArray{nullptr},
 	context{nullptr},
-	viewProj{ Matrix4::createSimpleViewProj(WINDOW_WIDTH, WINDOW_HEIGHT) }{}
+	spriteVertexArray{ nullptr },
+	spriteViewProj{ Matrix4::createSimpleViewProj(WINDOW_WIDTH, WINDOW_HEIGHT) },
+	view{Matrix4::createLookAt(Vector3::zero, Vector3::unitX, Vector3::unitZ)},
+	projection{ Matrix4::createPerspectiveFOV(Maths::ToRadians(70.f), WINDOW_WIDTH, WINDOW_HEIGHT, 25.f, 10000.f)}{}
 
 RendererOGL::~RendererOGL(){}
 
@@ -34,7 +36,6 @@ bool RendererOGL::Initialize(Window& windowP) {
 
 	//enable double buffering
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
 	//force OpenGL to use hardware acceleration
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
@@ -54,33 +55,19 @@ bool RendererOGL::Initialize(Window& windowP) {
 		return false;
 	}
 
-	vertexArray = new VertexArray(spriteVertices, 4, indices, 6);
+	spriteVertexArray = new VertexArray(spriteVertices, 4, indices, 6);
 	return true;
 }
 
 void RendererOGL::BeginDraw() {
 	glClearColor(0.45f, 0.45f, 1.0f, 1.0f);
 	//clear the color buffer
-	glClear(GL_COLOR_BUFFER_BIT);
-	//enable alpha blending on the color buffer
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// Active shader and vertex array
-	Assets::GetShader("Sprite").use();
-	Assets::GetShader("Sprite").setMatrix4("uViewProj", viewProj);
-	vertexArray->SetActive();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void RendererOGL::Draw() {
-	DrawSprites();
-}
-
-void RendererOGL::DrawSprite(const Actor& actor, const class Texture& tex, Rectangle srcRect, Vector2 origin, Flip flip) const {
-	Matrix4 scaleMat = Matrix4::createScale((float)tex.GetWidth(), (float)tex.GetHeight(), 1.0f);
-	Matrix4 world = scaleMat * actor.GetWorldTransform();
-	Assets::GetShader("Sprite").setMatrix4("uWorldTransform", world /* pixelTranslation*/);
-	tex.SetActive();
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	DrawMeshes();
+	//DrawSprites();
 }
 
 void RendererOGL::EndDraw() {
@@ -88,8 +75,21 @@ void RendererOGL::EndDraw() {
 }
 
 void RendererOGL::Close() {
+	delete spriteVertexArray;
 	SDL_GL_DeleteContext(context);
-	delete vertexArray;
+}
+
+void RendererOGL::DrawMeshes() {
+	// Enable depth buffering/disable alpha blend
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+	Assets::GetShader("BasicMesh").use();
+	// Update view-projection matrix
+	Assets::GetShader("BasicMesh").setMatrix4("uViewProj", view * projection);
+	for (auto mc : meshes)
+	{
+		mc->Draw(Assets::GetShader("BasicMesh"));
+	}
 }
 
 void RendererOGL::AddSprite(SpriteComponent* sprite)
@@ -111,10 +111,45 @@ void RendererOGL::RemoveSprite(SpriteComponent* sprite)
 
 void RendererOGL::DrawSprites()
 {
+	glDisable(GL_DEPTH_TEST);
+	// Enable alpha blending on the color buffer
+	glEnable(GL_BLEND);
+	//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+
+	// Active shader and vertex array
+	Shader& spriteShader = Assets::GetShader("Sprite");
+	spriteShader.use();
+	spriteShader.setMatrix4("uViewProj", spriteViewProj);
+	spriteVertexArray->SetActive();
+
 	for (auto sprite : sprites) {
 		sprite->Draw(*this);
 	}
 }
 
+void RendererOGL::DrawSprite(const Actor& actor, const class Texture& tex, Rectangle srcRect, Vector2 origin, Flip flip) const {
+	Matrix4 scaleMat = Matrix4::createScale((float)tex.GetWidth(), (float)tex.GetHeight(), 1.0f);
+	Matrix4 world = scaleMat * actor.GetWorldTransform();
+	Matrix4 pixelTranslation = Matrix4::createTranslation(Vector3(-WINDOW_WIDTH / 2 - origin.x, -WINDOW_HEIGHT / 2 - origin.y, 0.0f)); // Screen pixel coordinates
+	Shader& spriteShader = Assets::GetShader("Sprite");
+	spriteShader.setMatrix4("uWorldTransform", world * pixelTranslation);
+	tex.SetActive();
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+}
+
+void RendererOGL::AddMesh(MeshComponent* mesh) {
+	meshes.emplace_back(mesh);
+}
+
+void RendererOGL::RemoveMesh(MeshComponent* mesh) {
+	auto iter = std::find(begin(meshes), end(meshes), mesh);
+	meshes.erase(iter);
+}
+
+void RendererOGL::SetViewMatrix(const Matrix4& viewP) {
+	view = viewP;
+}
 
 

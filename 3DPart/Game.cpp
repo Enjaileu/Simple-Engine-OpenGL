@@ -2,6 +2,7 @@
 #include "Actor.h"
 #include "Timer.h"
 #include "Assets.h"
+#include "MeshComponent.h"
 
 bool Game::Initialize()
 {
@@ -12,16 +13,37 @@ bool Game::Initialize()
 }
 
 void Game::Load() {
-	
-	//Load Textures
+
+	Assets::LoadShader("Res\\Shaders\\Sprite.vert", "Res\\Shaders\\Sprite.frag", "", "", "", "Sprite");
+	Assets::LoadShader("Res\\Shaders\\BasicMesh.vert", "Res\\Shaders\\BasicMesh.frag", "", "", "", "BasicMesh");
+
+	Assets::LoadTexture(renderer, "Res\\Textures\\Default.png", "Default");
+	Assets::LoadTexture(renderer, "Res\\Textures\\Cube.png", "Cube");
 	Assets::LoadTexture(renderer, "Res\\Textures\\HealthBar.png", "HealthBar");
-	Assets::LoadShader("Res\\Sprite.vert", "Res\\Sprite.frag", "", "", "", "Sprite");
+	Assets::LoadTexture(renderer, "Res\\Textures\\Plane.png", "Plane");
+	Assets::LoadTexture(renderer, "Res\\Textures\\Radar.png", "Radar");
+	Assets::LoadTexture(renderer, "Res\\Textures\\Sphere.png", "Sphere");
 
-	//ui
-	Actor* ui = new Actor();
-	ui->SetPosition(Vector3(-350.f, -350.f, 0.f));
-	SpriteComponent* sc = new SpriteComponent(ui, Assets::GetTexture("HealthBar"));
+	Assets::LoadMesh("Res\\Meshes\\Cube.gpmesh", "Mesh_Cube");
+	Assets::LoadMesh("Res\\Meshes\\Plane.gpmesh", "Mesh_Plane");
+	Assets::LoadMesh("Res\\Meshes\\Sphere.gpmesh", "Mesh_Sphere");
 
+	camera = new Camera();
+
+	Actor* a = new Actor();
+	a->SetPosition(Vector3(200.f, 105.f, 0.f));
+	a->SetScale(100.f);
+	Quaternion q(Vector3::unitY, -Maths::piOver2);
+	q = Quaternion::Concatenate(q, Quaternion(Vector3::unitZ, Maths::pi + Maths::pi / 4.f));
+	a->SetRotation(q);
+	MeshComponent* mc = new MeshComponent(a);
+	mc->SetMesh(Assets::GetMesh("Mesh_Cube"));
+
+	Actor* b = new Actor();
+	b->SetPosition(Vector3(200.f, -75.f, 0.f));
+	b->SetScale(3.f);
+	MeshComponent* mcb = new MeshComponent(b);
+	mcb->SetMesh(Assets::GetMesh("Mesh_Sphere"));
 }
 
 void Game::ProcessInput()
@@ -86,16 +108,6 @@ void Game::Render()
 	renderer.EndDraw();
 }
 
-void Game::Unload() {
-	//delete actors
-	//because actor calls removeActor, have to use different style loop
-	while (!actors.empty()) {
-		delete actors.back();
-	}
-
-	//resources
-	Assets::Clear();
-}
 void Game::Loop()
 {
 	Timer timer;
@@ -107,6 +119,17 @@ void Game::Loop()
 		Render();
 		timer.delayTime(); 
 	}
+}
+
+void Game::Unload() {
+	//delete actors
+	//because actor calls removeActor, have to use different style loop
+	while (!actors.empty()) {
+		delete actors.back();
+	}
+
+	//resources
+	Assets::Clear();
 }
 
 void Game::Close()

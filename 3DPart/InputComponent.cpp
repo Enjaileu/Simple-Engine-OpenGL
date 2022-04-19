@@ -28,5 +28,5 @@ void InputComponent::ProcessInput(const Uint8* keyState) {
 	if (keyState[counterClockwiseKey]) {
 		angularSpeed += maxAngularSpeed;
 	}
-	SetGetAngularSpeed(angularSpeed);
+	SetAngularSpeed(angularSpeed);
 }
