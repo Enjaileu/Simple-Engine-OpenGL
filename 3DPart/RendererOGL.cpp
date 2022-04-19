@@ -13,7 +13,9 @@ RendererOGL::RendererOGL() :
 	spriteVertexArray{ nullptr },
 	spriteViewProj{ Matrix4::createSimpleViewProj(WINDOW_WIDTH, WINDOW_HEIGHT) },
 	view{Matrix4::createLookAt(Vector3::zero, Vector3::unitX, Vector3::unitZ)},
-	projection{ Matrix4::createPerspectiveFOV(Maths::ToRadians(70.f), WINDOW_WIDTH, WINDOW_HEIGHT, 25.f, 10000.f)}{}
+	projection{ Matrix4::createPerspectiveFOV(Maths::ToRadians(70.f), WINDOW_WIDTH, WINDOW_HEIGHT, 25.f, 10000.f)},
+	ambientLight{Vector3(1.f, 1.f, 1.f)},
+	dirLight{Vector3::zero, Vector3::zero, Vector3::zero}{}
 
 RendererOGL::~RendererOGL(){}
 
@@ -67,7 +69,7 @@ void RendererOGL::BeginDraw() {
 
 void RendererOGL::Draw() {
 	DrawMeshes();
-	//DrawSprites();
+	DrawSprites();
 }
 
 void RendererOGL::EndDraw() {
@@ -83,12 +85,16 @@ void RendererOGL::DrawMeshes() {
 	// Enable depth buffering/disable alpha blend
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-	Assets::GetShader("BasicMesh").use();
+	Shader& shader = Assets::GetShader("Phong");
+	shader.use();
 	// Update view-projection matrix
-	Assets::GetShader("BasicMesh").setMatrix4("uViewProj", view * projection);
+	shader.setMatrix4("uViewProj", view * projection);
+	//Lights
+	SetLightUniforms(shader);
+	//draw
 	for (auto mc : meshes)
 	{
-		mc->Draw(Assets::GetShader("BasicMesh"));
+		mc->Draw(Assets::GetShader("Phong"));
 	}
 }
 
@@ -132,9 +138,8 @@ void RendererOGL::DrawSprites()
 void RendererOGL::DrawSprite(const Actor& actor, const class Texture& tex, Rectangle srcRect, Vector2 origin, Flip flip) const {
 	Matrix4 scaleMat = Matrix4::createScale((float)tex.GetWidth(), (float)tex.GetHeight(), 1.0f);
 	Matrix4 world = scaleMat * actor.GetWorldTransform();
-	Matrix4 pixelTranslation = Matrix4::createTranslation(Vector3(-WINDOW_WIDTH / 2 - origin.x, -WINDOW_HEIGHT / 2 - origin.y, 0.0f)); // Screen pixel coordinates
 	Shader& spriteShader = Assets::GetShader("Sprite");
-	spriteShader.setMatrix4("uWorldTransform", world * pixelTranslation);
+	spriteShader.setMatrix4("uWorldTransform", world);
 	tex.SetActive();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
@@ -152,4 +157,19 @@ void RendererOGL::SetViewMatrix(const Matrix4& viewP) {
 	view = viewP;
 }
 
+void RendererOGL::SetLightUniforms(Shader& shader) {
+	//camera position is from inverted view
+	Matrix4 invertedView = view;
+	invertedView.invert();
+	shader.setVector3f("uCameraPos", invertedView.getTranslation());
+	//Ambient
+	shader.setVector3f("uAmbientLight", ambientLight);
+	//directional light
+	shader.setVector3f("uDirLight.direction", dirLight.direction);
+	shader.setVector3f("uDirLight.diffuseColor", dirLight.diffuseColor);
+	shader.setVector3f("uDirLight.specColor", dirLight.specColor);
+}
 
+void RendererOGL::SetAmbientLight(const Vector3& ambientP) {
+	ambientLight = ambientP;
+}

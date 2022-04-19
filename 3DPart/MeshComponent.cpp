@@ -18,6 +18,7 @@ void MeshComponent::Draw(Shader& shader) {
 	if (mesh) {
 		Matrix4 wt = owner.GetWorldTransform();
 		shader.setMatrix4("uWorldTransform", wt);
+		shader.setFloat("uSpecPower", mesh->GetSpecularPower());
 		Texture* t = mesh->GetTexture(textureIndex);
 		if (t) {
 			t->SetActive();

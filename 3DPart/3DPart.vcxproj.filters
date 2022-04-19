@@ -28,6 +28,9 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Plane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -58,6 +61,10 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="DirectionalLight.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="shaders">
@@ -84,6 +91,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="Res\Shaders\BasicMesh.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\Phong.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="Res\Shaders\Phong.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

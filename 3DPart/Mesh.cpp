@@ -4,7 +4,8 @@
 Mesh::Mesh():
 	vertexArray{nullptr},
 	shaderName{ "" },
-	radius{ 0.0f }{}
+	radius{ 0.0f },
+	specularPower{100.f}{}
 
 Mesh::~Mesh(){}
 
@@ -37,3 +38,5 @@ void Mesh::SetShaderName(const string& shaderNameP) {
 void Mesh::SetRadius(float radiusP) {
 	radius = radiusP;
 }
+
+void Mesh::SetSpecularPower(float value) { specularPower = value; }

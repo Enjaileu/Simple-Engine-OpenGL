@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "Rectangle.h"
 #include "MeshComponent.h"
+#include "DirectionalLight.h"
 
 #include <vector>
 
@@ -33,6 +34,11 @@ public:
 	void Close();
 	IRenderer::Type GetType() { return Type::OGL; }
 
+	DirectionalLight& GetDirectionalLight() { return dirLight; }
+
+	void SetLightUniforms(Shader& shader);
+	void SetAmbientLight(const Vector3& ambientP);
+
 private:
 	void DrawMeshes();
 	void DrawSprites();
@@ -46,5 +52,8 @@ private:
 
 	std::vector<class MeshComponent*> meshes;
 	std::vector<class SpriteComponent*> sprites;
+
+	Vector3 ambientLight;
+	DirectionalLight dirLight;
 };
 
